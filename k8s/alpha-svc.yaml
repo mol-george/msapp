@@ -1,0 +1,13 @@
+# SVC are the same regardless of the version
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: alpha
+  name: alpha
+spec:
+  type: NodePort
+  ports:
+  - port: 80
+  selector:
+    app: alpha

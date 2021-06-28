@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: beta
+  name: beta-v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: beta
+  template:
+    metadata:
+      labels:
+        app: beta
+        version: v2
+    spec:
+      containers:
+        - image: molgeorge/msapp:aleph
+          name: beta
+          imagePullPolicy: Always
+          env:
+            - name: VERSION
+              value: "v2"
+            - name: NEXT_APP
+              value: "gamma"
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: downward
+              mountPath: /etc/downward
+      volumes:
+      - name: downward
+        downwardAPI:
+          items:
+          - path: "labels"
+            fieldRef:
+              fieldPath: metadata.labels
