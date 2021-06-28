@@ -163,3 +163,9 @@ bundles/
 vendor/pkg/
 pyenv
 Vagrantfile
+
+################ MICROSERVICES TEST APP
+msapp/
+msapp/*
+*msapp*
+
