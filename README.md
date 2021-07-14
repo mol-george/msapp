@@ -2,6 +2,10 @@
 
 Python Microservices App for testing and learning.
 
+Based on:
+* https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/ -> https://hub.docker.com/r/tiangolo/uwsgi-nginx/
+* https://github.com/tiangolo/uwsgi-nginx-flask-docker
+
 ```sh
 ## APP STRUCTURE
  # tree microsvc -L 3
