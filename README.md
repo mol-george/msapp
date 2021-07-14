@@ -6,6 +6,16 @@ Based on:
 * https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/ -> https://hub.docker.com/r/tiangolo/uwsgi-nginx/
 * https://github.com/tiangolo/uwsgi-nginx-flask-docker
 
+**Note:**
+* `msapp` has two versions: v1, v2
+* the only difference between versions is the deployment `VERSION` env passed
+* the deployments can pass `venv` that that control the behavior of the application:
+  - `VERSION`: decides the 'version' of the application - actually the only difference between versions
+  - `NEXT_APP`: decide if the app is attempting to make GET requests to another app
+* the app propagates any `x-` headers but it only returns to GET requests:
+  - X-Request-Id
+  - X-Dark-Header (somehow header case gets modified by request python library)
+
 ```sh
 ## APP STRUCTURE
  # tree microsvc -L 3
