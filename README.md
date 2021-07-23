@@ -68,3 +68,13 @@ for i in {1..10}; do
   sleep 0.2
 done
 ```
+
+## similar projects
+* https://github.com/jetstack/field-istio-demo/tree/master/demos
+
+## next
+* generate name for microservices if not provided github.com/goombaio/namegenerator
+* implement makefile
+* describe project in Yaml
+* implement grpc between microservices
+* make use of virtual clusters
