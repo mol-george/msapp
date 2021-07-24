@@ -78,3 +78,4 @@ done
 * describe project in Yaml
 * implement grpc between microservices
 * make use of virtual clusters
+* uses cases for other istio implementations e.g. external services
