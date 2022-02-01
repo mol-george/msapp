@@ -42,7 +42,7 @@ docker push molgeorge/mssap:v1
 docker image rm molgeorge/mssap:v1
 
 ## CONTAINER
-docker run -d --name alpha -p 80:80 molgeorge/mssap:v1
+docker run -d --name alpha -p 80:80 molgeorge/msapp:v1
 docker container exec -it alpha sh
 docker container ls
 docker container stop alpha
