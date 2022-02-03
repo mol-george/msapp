@@ -16,30 +16,56 @@ Python Microservices App for testing and learning.
 
 
 ## Deploying the App
-The **recommended** way is to deploy with helm [helm](https://gitlab.com/mol-george-notes/istio/-/tree/main/demos).
-
-Or you can also clone and deploy the manifests:
 
 ```sh
+# --------------------- HELM (recommended) --------------------- #
+helm repo add mol-george https://mol-george.github.io/charts/
+helm repo update
+
+## INSTALL
+  # v1
+helm install gamma-v1 mol-george/msapp --set microservice.name=gamma --version=0.1.0
+helm install beta-v1 mol-george/msapp --set microservice.name=beta,nextapp=gamma --version=0.1.0
+helm install alpha-v1 mol-george/msapp --set microservice.name=alpha,nextapp=beta,service.type=LoadBalancer --version=0.1.0
+
+  # v2
+helm install gamma-v2 mol-george/msapp --set microservice.name=gamma --version=0.2.0
+helm install beta-v2 mol-george/msapp --set microservice.name=beta,nextapp=gamma --version=0.2.0
+helm install alpha-v2 mol-george/msapp --set microservice.name=alpha,nextapp=beta,service.type=LoadBalancer --version=0.2.0
+
+## REMOVE
+  # v1
+helm uninstall alpha-v1 beta-v1 gamma-v1
+  # v2
+helm uninstall alpha-v2 beta-v2 gamma-v2
+
+# --------------------- KUBECTL --------------------- #
+
+## INSTALL
 git clone git@github.com:mol-george/msapp.git
 k apply -f msapp/k8s/
+
+## REMOVE
+k delete -f msapp/k8s/
+
+# --------------------- TEST --------------------- #
 k port-forward service/alpha 8080:80
 curl 127.0.0.1:8080
 
 ## expected response
 ➜ curl 127.0.0.1:8080
 {
-    "pod": "alpha-v2-75b46b7d87-j7m6k",
-    "version": "v2",
-    "counter": 3,
+    "pod": "alpha-v1-69bd45fc4b-9mbfg",
+    "version": "v1",
+    "counter": 24,
     "beta": {
         "pod": "beta-v1-6fbc86dcbf-8gprr",
         "version": "v1",
-        "counter": 14,
+        "counter": 12,
         "gamma": {
             "pod": "gamma-v2-6ffc4f7789-qvtvd",
             "version": "v2",
-            "counter": 13
+            "counter": 9
         }
     }
 }
