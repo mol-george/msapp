@@ -15,55 +15,36 @@ Python Microservices App for testing and learning.
   - X-Dark-Header (somehow header case gets modified by request python library)
 
 
+## Deploying the App
+The **recommended** way is to deploy with helm [helm](https://gitlab.com/mol-george-notes/istio/-/tree/main/demos).
+
+Or you can also clone and deploy the manifests:
 
 ```sh
-## deploying the app
-k apply -f - <<EOF
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app: alpha
-  name: alpha
-spec:
-  replicas: 2
-  selector:
-    matchLabels:
-      app: alpha
-  template:
-    metadata:
-      labels:
-        app: alpha
-    spec:
-      containers:
-        - image: molgeorge/msapp:v1
-          name: msapp
-          volumeMounts:
-            - name: downward
-              mountPath: /etc/downward
-      volumes:
-        - name: downward
-          downwardAPI:
-            items:
-              - path: "labels"
-                fieldRef:
-                  fieldPath: metadata.labels
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: alpha
-  name: alpha
-spec:
-  ports:
-  - name: "80"
-    port: 80
-  selector:
-    app: alpha
-EOF
+git clone git@github.com:mol-george/msapp.git
+k apply -f msapp/k8s/
+k port-forward service/alpha 8080:80
+curl 127.0.0.1:8080
 
+## expected response
+➜ curl 127.0.0.1:8080
+{
+    "pod": "alpha-v2-75b46b7d87-j7m6k",
+    "version": "v2",
+    "counter": 3,
+    "beta": {
+        "pod": "beta-v1-6fbc86dcbf-8gprr",
+        "version": "v1",
+        "counter": 14,
+        "gamma": {
+            "pod": "gamma-v2-6ffc4f7789-qvtvd",
+            "version": "v2",
+            "counter": 13
+        }
+    }
+}
 ```
+
 ---
 
 **NOTE:**
@@ -73,7 +54,7 @@ They do not work because:
 * the reason to implement this was for the app to return info about the pod is running on and also to control the app via labels, however I have not updated the _yet_ the original instructions
 * the app does not handle gracefully if the path does not exists (i.e. the volume and its mount are not in place)
 
-A better way to deploy and test the app is via [helm](https://gitlab.com/mol-george-notes/istio/-/tree/main/demos)
+
 
 ---
 ```sh
