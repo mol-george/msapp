@@ -64,10 +64,14 @@ spec:
 EOF
 
 ```
+---
 
-**Note:**
+**NOTE:**
 The instructions bellow are the original instructions to deploy the app but currently they do not work.
-They do not work because I aimplemented [The Downward API](https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/#the-downward-api) via a volume and volumeMount for the app to return info about the pod is running on and also to control the app via labels, however I have not updated the _yet_ the original instructions. I will do this at some point in the future.
+They do not work because:
+* I aimplemented [The Downward API](https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/#the-downward-api) via a volume and volumeMount [here](https://github.com/mol-george/msapp/blob/72824cef78566f4fdf632a63a8aafe96f1f7f1d1/app/main.py#L73)
+* the reason to implement this was for the app to return info about the pod is running on and also to control the app via labels, however I have not updated the _yet_ the original instructions
+* the app does not handle gracefully if the path does not exists (i.e. the volume and its mount are not in place)
 
 A better way to deploy and test the app is via [helm](https://gitlab.com/mol-george-notes/istio/-/tree/main/demos)
 
@@ -129,7 +133,8 @@ done
 * https://github.com/jetstack/field-istio-demo/tree/master/demos
 
 ## next
-* fix instructions to take into account the take into account the "The Downward API" implementation
+* fix instructions to take into account the take into account the "The Downward API" implementation i.e. create volume and volumeMount, or update them to use helm
+* fix [app](https://github.com/mol-george/msapp/blob/72824cef78566f4fdf632a63a8aafe96f1f7f1d1/app/main.py#L73) to handle path inexistance gracefully e.g. using [`pathlib `Path` module](https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions)
 * generate name for microservices if not provided github.com/goombaio/namegenerator
 * implement makefile
 * describe project in Yaml
