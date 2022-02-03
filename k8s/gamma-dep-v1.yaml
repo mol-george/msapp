@@ -16,7 +16,7 @@ spec:
         version: v1
     spec:
       containers:
-        - image: molgeorge/msapp:aleph
+        - image: molgeorge/msapp:v1
           name: gamma
           imagePullPolicy: Always
           env:
@@ -30,9 +30,9 @@ spec:
             - name: downward
               mountPath: /etc/downward
       volumes:
-      - name: downward
-        downwardAPI:
-          items:
-          - path: "labels"
-            fieldRef:
-              fieldPath: metadata.labels
+        - name: downward
+          downwardAPI:
+            items:
+              - path: "labels"
+                fieldRef:
+                  fieldPath: metadata.labels
