@@ -37,9 +37,9 @@ Based on:
 docker system prune -a
 
 ## IMAGE (Dockerfile's dir)
-docker build -t molgeorge/mssap:v1 .
-docker push molgeorge/mssap:v1
-docker image rm molgeorge/mssap:v1
+docker build -t molgeorge/msapp:v1 .
+docker push molgeorge/msapp:v1
+docker image rm molgeorge/msapp:v1
 
 ## CONTAINER
 docker run -d --name alpha -p 80:80 molgeorge/msapp:v1
@@ -57,7 +57,7 @@ pip install -r requirements.txt
 python main.py
 
 # --------------- K8S --------------- #
-k create deployment alpha --image=molgeorge/mssap:v1 --replicas=2 $do | k neat | yq eval . - > dep.yaml
+k create deployment alpha --image=molgeorge/msapp:v1 --replicas=2 $do | k neat | yq eval . - > dep.yaml
 k expose deployment alpha --type=NodePort --port=80 $do | k neat | yq eval . - > svc.yaml
 k apply -f .
 
