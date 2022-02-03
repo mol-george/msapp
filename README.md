@@ -134,7 +134,7 @@ done
 
 ## next
 * fix instructions to take into account the take into account the "The Downward API" implementation i.e. create volume and volumeMount, or update them to use helm
-* fix [app](https://github.com/mol-george/msapp/blob/72824cef78566f4fdf632a63a8aafe96f1f7f1d1/app/main.py#L73) to handle path inexistance gracefully e.g. using [`pathlib `Path` module](https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions)
+* fix [app](https://github.com/mol-george/msapp/blob/72824cef78566f4fdf632a63a8aafe96f1f7f1d1/app/main.py#L73) to handle path inexistance gracefully e.g. using [`pathlib` `Path` module](https://stackoverflow.com/questions/82831/how-do-i-check-whether-a-file-exists-without-exceptions)
 * generate name for microservices if not provided github.com/goombaio/namegenerator
 * implement makefile
 * describe project in Yaml
