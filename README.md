@@ -2,11 +2,9 @@
 
 Python Microservices App for testing and learning.
 
-Based on:
-* https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/ -> https://hub.docker.com/r/tiangolo/uwsgi-nginx/
-* https://github.com/tiangolo/uwsgi-nginx-flask-docker
-
-**Note:**
+* based on:
+  - https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/ -> https://hub.docker.com/r/tiangolo/uwsgi-nginx/
+  - https://github.com/tiangolo/uwsgi-nginx-flask-docker
 * `msapp` has two versions: v1, v2
 * the only difference between versions is the deployment `VERSION` env passed
 * the deployments can pass `venv` that that control the behavior of the application:
@@ -16,6 +14,64 @@ Based on:
   - X-Request-Id
   - X-Dark-Header (somehow header case gets modified by request python library)
 
+
+
+```sh
+## deploying the app
+k apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: alpha
+  name: alpha
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: alpha
+  template:
+    metadata:
+      labels:
+        app: alpha
+    spec:
+      containers:
+        - image: molgeorge/msapp:v1
+          name: msapp
+          volumeMounts:
+            - name: downward
+              mountPath: /etc/downward
+      volumes:
+        - name: downward
+          downwardAPI:
+            items:
+              - path: "labels"
+                fieldRef:
+                  fieldPath: metadata.labels
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: alpha
+  name: alpha
+spec:
+  ports:
+  - name: "80"
+    port: 80
+  selector:
+    app: alpha
+EOF
+
+```
+
+**Note:**
+The instructions bellow are the original instructions to deploy the app but currently they do not work.
+They do not work because I aimplemented [The Downward API](https://kubernetes.io/docs/tasks/inject-data-application/downward-api-volume-expose-pod-information/#the-downward-api) via a volume and volumeMount for the app to return info about the pod is running on and also to control the app via labels, however I have not updated the _yet_ the original instructions. I will do this at some point in the future.
+
+A better way to deploy and test the app is via [helm](https://gitlab.com/mol-george-notes/istio/-/tree/main/demos)
+
+---
 ```sh
 ## APP STRUCTURE
  # tree microsvc -L 3
@@ -73,6 +129,7 @@ done
 * https://github.com/jetstack/field-istio-demo/tree/master/demos
 
 ## next
+* fix instructions to take into account the take into account the "The Downward API" implementation
 * generate name for microservices if not provided github.com/goombaio/namegenerator
 * implement makefile
 * describe project in Yaml
